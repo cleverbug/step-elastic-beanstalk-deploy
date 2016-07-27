@@ -101,7 +101,8 @@ then
     cat $AWSEB_EB_CONFIG_FILE
 fi
 
-/usr/local/bin/eb use --region $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME || fail "EB is not working or is not set up correctly."
+debug "making eb using environment $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME in $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION"
+/usr/local/bin/eb use --region $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME
 
 if [ $? -ne 0 ]
 then
@@ -109,7 +110,7 @@ then
 fi
 
 debug "Checking if eb exists and can connect."
-/usr/local/bin/eb status || fail "EB is not working or is not set up correctly."
+/usr/local/bin/eb status
 if [ $? -ne 0 ]
 then
     fail "EB is not working or is not set up correctly." 
