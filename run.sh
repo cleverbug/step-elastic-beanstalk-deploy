@@ -22,10 +22,21 @@ then
     fail "Missing or empty option SECRET, please check wercker.yml"
 fi
 
+if [ ! -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ARTIFACT" ]
+then
+    fail "Missing or empty option ARTIFACT, please check wercker.yml"
+fi
+
 if [ ! -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION" ]
 then
     warn "Missing or empty option REGION, defaulting to us-west-2"
     WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION="us-west-2"
+fi
+
+if [ ! -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_PLATFORM" ]
+then
+    warn "Missing or empty option PLATFORM, defaulting to '64bit Amazon Linux 2016.03 v2.1.3 running Docker 1.11.1'"
+    WERCKER_ELASTIC_BEANSTALK_DEPLOY_PLATFORM="64bit Amazon Linux 2016.03 v2.1.3 running Docker 1.11.1"
 fi
 
 if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
@@ -76,10 +87,11 @@ branch-defaults:
     environment: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME
 global:
   application_name: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME
-  default_platform: Ruby 2.2 (Puma)
+  default_platform: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_PLATFORM
   default_region: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION
   profile: null
   sc: git
+  artifact: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ARTIFACT
 EOF
 
 if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]

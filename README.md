@@ -9,7 +9,9 @@
 * `secret` (required) Credentials key secret provided by amazon
 * `app_name` (required) Name of the application.
 * `env_name` (required) Name of the application environment you wish to deploy to.
+* `artifact` (required) Path to the artifact that will be deployed to your elastic beanstalk application.
 * `region` (optional) Region that your elastic beanstalk instance lives in, defaults to us-west-2.
+* `platform` (optional) The platform that the artifact will be deployed on. Currently defaults to: 64bit Amazon Linux 2016.03 v2.1.3 running Docker 1.11.1
 * `nohup` (optional) Deploying background jobs.
 * `opts` (optional) eb deploy options. ex) `--staged`
 
@@ -22,6 +24,8 @@ deploy:
             app_name: My Application
             env_name: production
             region: us-west-2
+            platform: 64bit Amazon Linux 2016.03 v2.1.3 running Docker 1.11.1
+            artifact: $WERCKER_OUTPUT_DIR/deploy/docker.zip
             nohup: true
             opts: --staged
 ```

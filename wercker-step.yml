@@ -25,3 +25,9 @@ properties:
   region:
     type: string
     required: true
+  artifact:
+    type: string
+    required: true
+  platform:
+    type: string
+    required: true
