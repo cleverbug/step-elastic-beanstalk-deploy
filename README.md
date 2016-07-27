@@ -18,7 +18,7 @@
 ```yml
 deploy:
     steps:
-        - hotakasaito/elastic-beanstalk-deploy:
+        - cleverbug/elastic-beanstalk-deploy:
             key: $AMAZON_KEY
             secret: $AMAZON_SECRET_KEY
             app_name: My Application
