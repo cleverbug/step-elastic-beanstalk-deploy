@@ -115,12 +115,12 @@ then
     fail "EB is not working or is not set up correctly." 
 fi
 
-debug "Pushing to AWS eb servers."
+debug "Pushing to AWS eb servers with message: $WERCKER_GIT_COMMIT"
 if [ "true" = "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_NOHUP" ]; 
 then
-    nohup /usr/local/bin/eb deploy $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
+    nohup /usr/local/bin/eb deploy --debug -m $WERCKER_GIT_COMMIT $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
 else
-    /usr/local/bin/eb deploy $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
+    /usr/local/bin/eb deploy --debug -m $WERCKER_GIT_COMMIT $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
 fi
 
 if [ $? -ne 0 ]
