@@ -106,12 +106,12 @@ debug "Checking if eb exists and can connect."
 
 DEPLOY_LABEL="$WERCKER_GIT_BRANCH/$WERCKER_GIT_COMMIT"
 DEPLOY_MESSAGE="wercker-deploy of commit: $DEPLOY_LABEL"
-debug "Pushing to AWS eb servers with label: $DEPLOY_LABEL"
+debug "Pushing to AWS eb servers version: $DEPLOY_LABEL"
 if [ "true" = "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_NOHUP" ]; 
 then
-    nohup /usr/local/bin/eb deploy -l "$DEPLOY_LABEL" -m "$DEPLOY_MESSAGE" $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
+    nohup /usr/local/bin/eb deploy -m "$DEPLOY_MESSAGE" $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
 else
-    /usr/local/bin/eb deploy -l "$DEPLOY_LABEL" -m "$DEPLOY_MESSAGE" $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
+    /usr/local/bin/eb deploy -m "$DEPLOY_MESSAGE" $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
 fi
 
 if [ $? -ne 0 ]
