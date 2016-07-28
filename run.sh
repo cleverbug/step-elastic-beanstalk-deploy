@@ -90,7 +90,6 @@ global:
   default_platform: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_PLATFORM
   default_region: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION
   profile: null
-  sc: git
   artifact: $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ARTIFACT
 EOF
 
@@ -117,7 +116,7 @@ then
 fi
 
 debug "Pushing to AWS eb servers."
-if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_NOHUP" ]
+if [ "true" = "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_NOHUP" ]; 
 then
     nohup /usr/local/bin/eb deploy $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
 else
