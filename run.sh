@@ -61,7 +61,7 @@ echo 'Installing pip...'
 sudo apt-get install -y python-pip libpython-all-dev
 
 echo 'Installing awscli...'
-sudo pip install awsebcli
+sudo pip install awsebcli==3.7.3
 
 echo 'eb version show...'
 eb --version
