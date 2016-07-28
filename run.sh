@@ -51,9 +51,6 @@ export AWS_CREDENTIAL_FILE=$AWSEB_CREDENTIAL_FILE
 export AWS_ACCESS_KEY_ID=$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY
 export AWS_SECRET_ACCESS_KEY=$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET
 
-echo "Printenv..."
-env
-
 echo 'Synchronizing References in apt-get...'
 sudo apt-get update
 
@@ -101,26 +98,20 @@ then
 fi
 
 debug "making eb using environment $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME in $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION"
-/usr/local/bin/eb use --region $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME
-
-if [ $? -ne 0 ]
-then
-    fail "EB is not working or is not set up correctly." 
-fi
+/usr/local/bin/eb use --region $WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION $WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME || fail "EB is not working or is not set up correctly." 
 
 debug "Checking if eb exists and can connect."
-/usr/local/bin/eb status
-if [ $? -ne 0 ]
-then
-    fail "EB is not working or is not set up correctly." 
-fi
+/usr/local/bin/eb status || fail "EB is not working or is not set up correctly." 
 
-debug "Pushing to AWS eb servers with message: $WERCKER_GIT_COMMIT"
+
+DEPLOY_LABEL="$WERCKER_GIT_BRANCH/$WERCKER_GIT_COMMIT"
+DEPLOY_MESSAGE="wercker-deploy of commit: $DEPLOY_LABEL"
+debug "Pushing to AWS eb servers with label: $DEPLOY_LABEL"
 if [ "true" = "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_NOHUP" ]; 
 then
-    nohup /usr/local/bin/eb deploy --debug -m $WERCKER_GIT_COMMIT $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
+    nohup /usr/local/bin/eb deploy -l $DEPLOY_LABEL -m $DEPLOY_MESSAGE $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS &
 else
-    /usr/local/bin/eb deploy --debug -m $WERCKER_GIT_COMMIT $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
+    /usr/local/bin/eb deploy -l $DEPLOY_LABEL -m $DEPLOY_MESSAGE $WERCKER_ELASTIC_BEANSTALK_DEPLOY_OPTS
 fi
 
 if [ $? -ne 0 ]
